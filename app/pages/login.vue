@@ -22,14 +22,16 @@
 </template>
 
 <script setup lang="ts">
+import { useAuthStore } from '~/stores/auth'
+
 const router = useRouter()
+const auth = useAuthStore()
 
 const email = ref('')
 const password = ref('')
 
 const onSubmit = () => {
-  // TODO: API 呼び出しで実際にログイン処理を行う
-  console.log('login', { email: email.value, password: password.value })
+  auth.login(email.value, password.value)
   router.push('/projects')
 }
 </script>
