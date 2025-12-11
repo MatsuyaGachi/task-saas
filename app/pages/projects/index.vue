@@ -4,6 +4,8 @@
 
     <section>
       <h2>参加中のプロジェクト</h2>
+      <p>ログイン中: {{ auth.user?.name }}</p>
+
       <ul v-if="projects.length">
         <li v-for="project in projects" :key="project.id">
           <button @click="goProject(project.id)">
@@ -27,6 +29,9 @@
 </template>
 
 <script setup lang="ts">
+import { useAuthStore } from '~/stores/auth'
+
+const auth = useAuthStore()
 const router = useRouter()
 
 type Project = {
