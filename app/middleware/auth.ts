@@ -1,10 +1,11 @@
 import { useAuthStore } from "~/stores/auth"
 
-export default defineNuxtRouteMiddleware((to, from) => {
+export default defineNuxtRouteMiddleware((to) => {
   const auth = useAuthStore()
 
-  const publicPages = ['/login', '/signup']
+  auth.hydrateFromCookie()
 
+  const publicPages = ['/login', '/signup']
   if (!auth.user && !publicPages.includes(to.path)) {
     return navigateTo('/login')
   }
