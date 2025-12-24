@@ -30,20 +30,22 @@
 
 <script setup lang="ts">
 import { useAuthStore } from '~/stores/auth'
+import { useApi } from '~/composables/useApi'
 
 const auth = useAuthStore()
 const router = useRouter()
+const { apiFetch  } = useApi()
 
 type Project = {
   id: number
   name: string
 }
 
-const projects = ref<Project[]>([
-  // TODO: API から取得
-  { id: 1, name: 'プロジェクト A' },
-  { id: 2, name: 'プロジェクト B' }
-])
+const projects = ref<Project[]>([])
+
+onMounted(async () => {
+  projects.value = await apiFetch<Project[]>('/projects')
+})
 
 const goProject = (id: number) => {
   router.push(`/projects/${id}`)

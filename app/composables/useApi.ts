@@ -3,7 +3,7 @@ export const useApi = () => {
   const token = useCookie<string | null>('token')
 
   const apiFetch = $fetch.create({
-    baseURL: config.public.apiBase as string,
+    baseURL: '/api',
     onRequest({ options }) {
       // tokenがあれば Authorization を自動付与
       if (token.value) {
