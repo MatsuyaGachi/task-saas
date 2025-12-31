@@ -38,14 +38,17 @@
 </template>
 
 <script setup lang="ts">
+const { apiFetch } = useApi()
 const route = useRoute()
+
 const taskId = computed(() => Number(route.params.taskId))
 
 type TaskDetail = {
   id: number
+  projectId: number
   title: string
   description: string
-  status: string
+  status: 'todo' | 'doing' | 'done'
   assignee: string
   dueDate: string
 }
@@ -61,31 +64,36 @@ const allTaskDetails = ref<TaskDetail[]>([
     id: 1,
     title: '仕様書を書く',
     description: 'プロジェクトAの仕様書を作成する',
-    status: 'ToDo',
+    status: 'todo',
     assignee: '山田 太郎',
-    dueDate: '2025-11-30'
+    dueDate: '2025-11-30',
+    projectId: 0
   },
   {
     id: 2,
     title: 'API設計をする',
     description: '認証とタスク管理用APIを設計する',
-    status: 'Doing',
+    status: 'doing',
     assignee: '佐藤 花子',
-    dueDate: '2025-12-05'
+    dueDate: '2025-12-05',
+    projectId: 0
   },
   {
     id: 3,
     title: 'デプロイ設定',
     description: '本番環境へのデプロイフローを整える',
-    status: 'Done',
+    status: 'done',
     assignee: '鈴木 次郎',
-    dueDate: '2025-12-10'
+    dueDate: '2025-12-10',
+    projectId: 0
   }
 ])
 
-const task = computed(() =>
-  allTaskDetails.value.find(t => t.id === taskId.value) ?? allTaskDetails.value[0]
-)
+const task = ref<TaskDetail | null>(null)
+
+onMounted(async () => {
+  task.value = await apiFetch<TaskDetail>(`/tasks/${taskId.value}`)
+})
 
 const comments = ref<Comment[]>([
   // TODO: API から取得
