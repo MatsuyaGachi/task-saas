@@ -1,5 +1,4 @@
-import { listTasksByProject } from '~~/server/utils/taskStore'
-import { updateTaskStatus , type Status } from '~/server/utils/taskStore'
+import { updateTaskStatus , type Status } from '~~/server/utils/taskStore'
 
 export default defineEventHandler(async (event) => {
   const auth = getHeader(event, 'authorization')
