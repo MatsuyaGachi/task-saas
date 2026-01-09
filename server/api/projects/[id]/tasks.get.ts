@@ -1,3 +1,5 @@
+import { listTasksByProject } from "~~/server/utils/taskStore"
+
 export default defineEventHandler((event) => {
   const auth = getHeader(event, 'authorization')
   if (!auth || !auth.startsWith('Bearer ')) {
@@ -15,5 +17,5 @@ export default defineEventHandler((event) => {
     { id: 3, projectId: 2, title: 'デプロイ設定', status: 'done' },
   ] as const
 
-  return allTasks.filter(t => t.projectId === projectId)
+  return listTasksByProject(projectId)
 })
